@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Anti-DDoS quote | BB Host{% endblock %}
+
+{% block content %}
+  <section class="hero section">
+    <div class="container-site">
+      <form method="post" class="card mx-auto max-w-2xl" novalidate>
+        {% csrf_token %}
+        <span class="eyebrow"><i class="fa fa-shield"></i> Mitigation as a Service</span>
+        <h1 class="heading mt-4">Request a quote</h1>
+        <p class="hint mt-1 mb-6">A specialist will get back to you with the protection design and a proposal.</p>
+        <div class="grid gap-4 sm:grid-cols-2">
+          {% include 'partials/field.html' with field=form.bandwidth %}
+          {% include 'partials/field.html' with field=form.delivery_mode %}
+          {% include 'partials/field.html' with field=form.name %}
+          {% include 'partials/field.html' with field=form.company %}
+          {% include 'partials/field.html' with field=form.email %}
+          {% include 'partials/field.html' with field=form.phone %}
+          <div class="sm:col-span-2">{% include 'partials/field.html' with field=form.message %}</div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-6 w-full"><i class="fa fa-paper-plane"></i> Send request</button>
+        <p class="hint mt-3 text-center">Prefer WhatsApp? <a href="https://wa.me/5511916788282" target="_blank">+55 11 91678-8282</a></p>
+      </form>
+    </div>
+  </section>
+{% endblock %}

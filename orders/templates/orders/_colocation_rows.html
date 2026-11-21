@@ -1,0 +1,9 @@
+{# Editable list of servers for a colocation estimate (shared by the public page and the customer area). #}
+<div id="colo_rows" class="divide-y divide-line"
+     data-ppu="{{ settings.price_per_u|stringformat:'.2f' }}"
+     data-ppw="{{ settings.price_per_watt|stringformat:'.4f' }}"
+     data-watts="{{ settings.default_watts }}">
+  {% if rows %}{% for item in rows %}{% include 'orders/_colocation_row.html' %}{% endfor %}
+  {% else %}{% include 'orders/_colocation_row.html' with item=None %}{% endif %}
+</div>
+<button type="button" id="colo_add" class="btn btn-ghost mt-3"><i class="fa fa-plus"></i>Add server</button>

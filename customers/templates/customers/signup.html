@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Create account | BB Host{% endblock %}
+
+{% block content %}
+  <section class="hero section">
+    <div class="container-site">
+      <div class="card mx-auto max-w-2xl">
+        <span class="eyebrow"><i class="fa fa-user-plus"></i> Customer area</span>
+        <h1 class="heading mt-4">Create account</h1>
+        <p class="hint mt-1 mb-6">With an account you can order VPS and dedicated servers, request colocation and track everything in one place.</p>
+
+        <form method="post" novalidate>
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ next }}">
+          <div class="grid gap-4 sm:grid-cols-12">
+            <div class="sm:col-span-12">{% include 'partials/field.html' with field=form.name %}</div>
+            <div class="sm:col-span-6">{% include 'partials/field.html' with field=form.email %}</div>
+            <div class="sm:col-span-6">{% include 'partials/field.html' with field=form.phone %}</div>
+            <div class="sm:col-span-5">{% include 'partials/field.html' with field=form.document_type %}</div>
+            <div class="sm:col-span-7">{% include 'partials/field.html' with field=form.document_number %}</div>
+            <div class="sm:col-span-12" id="company_field">{% include 'partials/field.html' with field=form.company_name %}</div>
+            <div class="sm:col-span-6">{% include 'partials/field.html' with field=form.password %}</div>
+            <div class="sm:col-span-6">{% include 'partials/field.html' with field=form.password2 %}</div>
+            <div class="sm:col-span-12">{% include 'partials/field.html' with field=form.accept_terms %}</div>
+          </div>
+          <button type="submit" class="btn btn-primary mt-6 w-full">Create account <i class="fa fa-arrow-right"></i></button>
+        </form>
+
+        <p class="hint mt-6 text-center">
+          Already have an account?
+          <a href="{% url 'customers:login' %}{% if next %}?next={{ next|urlencode }}{% endif %}">Log in</a>
+        </p>
+      </div>
+    </div>
+  </section>
+{% endblock %}

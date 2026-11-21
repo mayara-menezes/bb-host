@@ -1,0 +1,6 @@
+{# Centered section heading. Usage: {% include 'partials/section_heading.html' with eyebrow='...' title='...' lead='...' %} #}
+<div class="mx-auto mb-10 max-w-3xl text-center">
+  <span class="eyebrow">{% if icon %}<i class="fa {{ icon }}"></i> {% endif %}{{ eyebrow }}</span>
+  <h2 class="heading mt-4">{{ title }}</h2>
+  {% if lead %}<p class="lead mt-3">{{ lead }}</p>{% endif %}
+</div>

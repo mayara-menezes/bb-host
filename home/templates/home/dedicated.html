@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Dedicated servers | BB Host{% endblock %}
+
+{% block content %}
+  <section class="hero section-tight">
+    <div class="container-site mx-auto max-w-3xl text-center">
+      <span class="eyebrow"><i class="fa fa-hdd-o"></i> Dedicated servers</span>
+      <h1 class="display mt-6">Dedicated hardware, <span class="gradient-text">automatic delivery</span></h1>
+      <p class="lead mt-6">
+        Exclusive machines in the BB Host data center, automatic provisioning and Anti-DDoS included.
+      </p>
+      {% if available_count %}<span class="badge badge-success mt-3">{{ available_count }} plan{{ available_count|pluralize }} available now</span>{% endif %}
+    </div>
+  </section>
+
+  <section class="section-tight pb-16">
+    <div class="container-site">
+      <form method="get" action="{% url 'home:dedicated' %}" class="mb-5 flex items-center justify-end gap-3">
+        <label for="sort_select" class="hint">Sort by</label>
+        <select id="sort_select" name="sort" class="form-select w-auto min-w-52">
+          {% for value, label in sort_options %}
+            <option value="{{ value }}"{% if value == sort %} selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+        <noscript><button type="submit" class="btn btn-outline">Apply</button></noscript>
+      </form>
+
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {% for s in servers %}
+          <article class="card flex flex-col {% if s.featured %}card-featured{% endif %}">
+            <div class="flex items-start justify-between gap-2">
+              <h2 class="text-xl">{{ s.name }}</h2>
+              {% if s.available %}<span class="badge badge-success">Available</span>{% else %}<span class="badge">On request</span>{% endif %}
+            </div>
+            <p class="my-2"><span class="price">R$&nbsp;{{ s.monthly_price|money }}</span> <span class="price-unit">/month</span></p>
+            <dl class="mb-5 flex-1">
+              {% for label, icon, value in s.specs %}
+                <div class="spec-row"><dt class="spec-key"><i class="fa {{ icon }} fa-fw"></i> {{ label }}</dt><dd class="spec-value">{{ value }}</dd></div>
+              {% endfor %}
+            </dl>
+            {% if s.available %}
+              <a href="{% url 'orders:dedicated_configure' s.slug %}" class="btn btn-primary w-full">Configure and order <i class="fa fa-arrow-right"></i></a>
+            {% else %}
+              <a href="{% url 'orders:dedicated_configure' s.slug %}" class="btn btn-outline w-full">See details <i class="fa fa-arrow-right"></i></a>
+              <details class="group mt-2.5">
+                <summary class="cursor-pointer list-none rounded-xl border border-dashed border-line-strong p-2 text-center text-sm font-semibold text-muted hover:bg-surface-hover hover:text-ink-strong group-open:border-solid group-open:text-ink-strong [&::-webkit-details-marker]:hidden">
+                  <i class="fa fa-bell-o mr-1"></i>Notify me when it's back
+                </summary>
+                <form method="post" class="mt-2" action="{% url 'home:notify_me' s.pk %}">
+                  {% csrf_token %}
+                  <input type="email" name="email" required class="form-input text-sm" placeholder="you@example.com" value="{{ user.email }}">
+                  <input type="text" name="website" tabindex="-1" autocomplete="off" class="hidden">
+                  <button type="submit" class="btn btn-primary btn-sm mt-2 w-full">Notify me</button>
+                  <p class="hint mt-2">Just one e-mail, when the machine is back. You can unsubscribe from it.</p>
+                </form>
+              </details>
+            {% endif %}
+          </article>
+        {% empty %}
+          <p class="hint col-span-full text-center">No servers published at the moment.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

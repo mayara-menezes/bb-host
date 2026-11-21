@@ -1,0 +1,60 @@
+<footer class="border-t border-line bg-page text-muted">
+  <div class="container-site">
+    <div class="grid gap-8 py-12 sm:grid-cols-2 lg:grid-cols-12">
+      <div class="lg:col-span-4 lg:pr-8">
+        <p class="font-display text-[1.35rem] font-extrabold tracking-tight text-ink-strong">BB Host</p>
+        <p class="mt-2 mb-4 max-w-xs">
+          A quality data center. VPS, dedicated servers and colocation with unlimited
+          DDoS protection on a high-capacity network in Brazil.
+        </p>
+        <div class="flex gap-2">
+          {% with social='grid size-9 place-items-center rounded-lg border border-line text-muted no-underline transition hover:border-line-strong hover:bg-surface-hover hover:text-ink-strong' %}
+            <a class="{{ social }}" href="https://wa.me/5511916788282" target="_blank" title="WhatsApp"><i class="fa fa-whatsapp"></i></a>
+            <a class="{{ social }}" href="https://discord.gg/bbhost" target="_blank" title="Discord"><i class="fa fa-comments"></i></a>
+            <a class="{{ social }}" href="https://status.bbhost.com.br" target="_blank" title="Status"><i class="fa fa-heartbeat"></i></a>
+          {% endwith %}
+        </div>
+      </div>
+      {% with title='mb-3.5 font-sans text-[0.82rem] font-bold tracking-wider text-ink-strong uppercase' link='text-[0.95rem] text-muted no-underline transition hover:text-ink-strong' %}
+        <div class="lg:col-span-2">
+          <h6 class="{{ title }}">Products</h6>
+          <ul class="space-y-2">
+            <li><a class="{{ link }}" href="{% url 'home:vps' %}">VPS</a></li>
+            <li><a class="{{ link }}" href="{% url 'home:dedicated' %}">Dedicated servers</a></li>
+            <li><a class="{{ link }}" href="{% url 'home:colocation' %}">Colocation</a></li>
+            <li><a class="{{ link }}" href="{% url 'home:mitigation' %}">Mitigation (Anti-DDoS)</a></li>
+          </ul>
+        </div>
+        <div class="lg:col-span-2">
+          <h6 class="{{ title }}">Company</h6>
+          <ul class="space-y-2">
+            <li><a class="{{ link }}" href="{% url 'home:about' %}">About us</a></li>
+            <li><a class="{{ link }}" href="{% url 'home:about' %}#infra">Infrastructure</a></li>
+            <li><a class="{{ link }}" href="{% url 'home:about' %}#network">Network</a></li>
+            <li><a class="{{ link }}" href="https://status.bbhost.com.br" target="_blank">Status</a></li>
+          </ul>
+        </div>
+        <div class="lg:col-span-4">
+          <h6 class="{{ title }}">Support 24/7/365</h6>
+          <ul class="space-y-2">
+            <li><a class="{{ link }}" href="{% url 'customers:dashboard' %}"><i class="fa fa-user fa-fw mr-1.5"></i>Customer area</a></li>
+            <li><a class="{{ link }}" href="{% url 'customers:tickets' %}"><i class="fa fa-ticket fa-fw mr-1.5"></i>My tickets</a></li>
+            <li><a class="{{ link }}" href="https://wa.me/5511916788282" data-bb-chat="Hi! I need support."><i class="fa fa-comments fa-fw mr-1.5"></i>Talk to support now</a></li>
+            <li><a class="{{ link }}" href="https://wa.me/5511916788282" target="_blank"><i class="fa fa-whatsapp fa-fw mr-1.5"></i>+55 11 91678-8282</a></li>
+          </ul>
+        </div>
+      {% endwith %}
+    </div>
+    <div class="flex flex-wrap items-center justify-between gap-4 border-t border-line py-5 text-sm">
+      <span>© BB Host LTDA · CNPJ 27.041.737/0001-09 · Since 2013</span>
+      <span class="flex flex-wrap gap-x-4 gap-y-1">
+        <a href="#" class="text-muted no-underline hover:text-ink-strong hover:underline">Terms of Use</a>
+        <a href="#" class="text-muted no-underline hover:text-ink-strong hover:underline">Privacy Policy</a>
+      </span>
+      <span class="flex gap-2">
+        <span class="badge"><i class="fa fa-shield"></i>MANRS</span>
+        <span class="badge badge-success"><i class="fa fa-circle text-[0.55rem] text-green-500"></i>Operational</span>
+      </span>
+    </div>
+  </div>
+</footer>

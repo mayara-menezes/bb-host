@@ -1,0 +1,12 @@
+{# Colored status chip. Usage: {% include 'customers/_status.html' with status=obj.status label=obj.get_status_display %} #}
+{% if status == 'active' or status == 'paid' or status == 'approved' or status == 'completed' or status == 'resolved' %}
+  <span class="badge badge-success">{{ label }}</span>
+{% elif status == 'awaiting_payment' or status == 'open' or status == 'waiting_customer' or status == 'proposal_sent' %}
+  <span class="badge badge-warning">{{ label }}</span>
+{% elif status == 'cancelled' or status == 'suspended' or status == 'declined' or status == 'overdue' %}
+  <span class="badge badge-danger">{{ label }}</span>
+{% elif status == 'closed' %}
+  <span class="badge">{{ label }}</span>
+{% else %}
+  <span class="badge badge-primary">{{ label }}</span>
+{% endif %}

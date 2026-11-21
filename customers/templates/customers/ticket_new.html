@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Open a ticket | BB Host{% endblock %}
+
+{% block content %}
+  <section class="section-tight pb-16">
+    <div class="container-site">
+      {% include 'customers/_header.html' with title='Open a ticket' icon='fa-life-ring' %}
+      <form method="post" class="card" novalidate>
+        {% csrf_token %}
+        <div class="grid gap-4 md:grid-cols-12">
+          <div class="md:col-span-8">{% include 'partials/field.html' with field=form.subject %}</div>
+          <div class="md:col-span-4">{% include 'partials/field.html' with field=form.category %}</div>
+          <div class="md:col-span-12">{% include 'partials/field.html' with field=form.service %}</div>
+          <div class="md:col-span-12">{% include 'partials/field.html' with field=form.message %}</div>
+        </div>
+        <div class="mt-6 flex justify-between">
+          <a href="{% url 'customers:tickets' %}" class="btn btn-ghost">Back</a>
+          <button type="submit" class="btn btn-primary">Send ticket <i class="fa fa-arrow-right"></i></button>
+        </div>
+      </form>
+    </div>
+  </section>
+{% endblock %}

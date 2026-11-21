@@ -1,0 +1,19 @@
+<div class="colo-row grid grid-cols-12 items-end gap-3 py-4 first:pt-0">
+  <div class="col-span-12 sm:col-span-5">
+    <label class="field-label"><i class="fa fa-server mr-1.5"></i>Model (optional)</label>
+    <input type="text" name="model" class="form-input" placeholder="E.g. Dell R640" value="{{ item.model|default:'' }}">
+  </div>
+  <div class="col-span-5 sm:col-span-3">
+    <label class="field-label">Size</label>
+    <select name="size" class="form-select colo-size">
+      {% for u in sizes %}<option value="{{ u }}"{% if u == item.size_u %} selected{% endif %}>{{ u }}U</option>{% endfor %}
+    </select>
+  </div>
+  <div class="col-span-5 sm:col-span-3">
+    <label class="field-label">Watts</label>
+    <input type="number" name="watts" class="form-input colo-watts" min="0" value="{{ item.watts|default:settings.default_watts }}">
+  </div>
+  <div class="col-span-2 sm:col-span-1 text-right">
+    <button type="button" class="colo-remove btn btn-ghost px-3" title="Remove"><i class="fa fa-trash"></i></button>
+  </div>
+</div>

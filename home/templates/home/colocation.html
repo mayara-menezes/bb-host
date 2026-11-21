@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Colocation (instant estimate) | BB Host{% endblock %}
+
+{% block content %}
+  <section class="hero section-tight">
+    <div class="container-site mx-auto max-w-3xl text-center">
+      <span class="eyebrow"><i class="fa fa-server"></i> Colocation</span>
+      <h1 class="display mt-6">Your server <span class="gradient-text">in our data center</span></h1>
+      <p class="lead mt-6">
+        Get a quick estimate by rack space (U) and power (watts).
+        Redundant power and network, remote hands and 24/7 support.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-tight pb-16">
+    <form method="post" action="{% url 'orders:colocation_start' %}" class="container-site grid items-start gap-6 lg:grid-cols-12">
+      {% csrf_token %}
+      <div class="card lg:col-span-7">
+        {% include 'orders/_colocation_rows.html' with rows=None %}
+      </div>
+
+      <aside class="card card-featured lg:sticky lg:top-24 lg:col-span-5">
+        <h2 class="text-2xl">Colocation</h2>
+        <p class="hint mb-3">Recurring monthly estimate</p>
+        <p><span class="price">R$ <span id="colo_estimate">0.00</span></span> <span class="price-unit">/month</span></p>
+        <p class="hint mt-2"><i class="fa fa-eye mr-1"></i>Visible without signing up, no commitment.</p>
+        <ul class="my-4">
+          <li class="check-item"><i class="fa fa-check"></i> Redundant power and network</li>
+          <li class="check-item"><i class="fa fa-check"></i> Remote hands included</li>
+          <li class="check-item"><i class="fa fa-check"></i> 24/7/365 support</li>
+        </ul>
+        <p class="hint mb-4">
+          Network ports, full racks and setup fees are detailed in your request.
+          To <b>request move-in</b> of your equipment, create and <b>verify</b> your account.
+        </p>
+        {% if user.is_authenticated %}
+          <button type="submit" class="btn btn-primary w-full">Request move-in <i class="fa fa-arrow-right"></i></button>
+        {% else %}
+          <button type="submit" name="destination" value="signup" class="btn btn-primary w-full">Sign up to the customer area <i class="fa fa-arrow-right"></i></button>
+          <button type="submit" name="destination" value="login" class="btn btn-outline mt-2 w-full"><i class="fa fa-sign-in"></i>I already have an account</button>
+        {% endif %}
+      </aside>
+    </form>
+  </section>
+
+  <section class="section band">
+    <div class="container-site">
+      {% include 'partials/section_heading.html' with eyebrow='Infrastructure' title='Why host with us' %}
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {% include 'partials/feature_card.html' with icon='fa-bolt' title='Redundant power' text='A+B feeds with UPS and generator.' %}
+        {% include 'partials/feature_card.html' with icon='fa-snowflake-o' title='Cooling' text='Redundant precision cooling.' %}
+        {% include 'partials/feature_card.html' with icon='fa-sitemap' title='High-capacity network' text='Redundant uplinks and cross-connects.' %}
+        {% include 'partials/feature_card.html' with icon='fa-lock' title='Physical security' text='Controlled access and 24h monitoring.' %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-site grid items-center gap-12 lg:grid-cols-2">
+      <div>
+        <span class="eyebrow">Included in every plan</span>
+        <h2 class="heading mt-4">Peace of mind from rack to network</h2>
+        <ul class="mt-5">
+          <li class="check-item"><i class="fa fa-check"></i> 500 Tbps Anti-DDoS protection</li>
+          <li class="check-item"><i class="fa fa-check"></i> Cross-connect to the BB Host network</li>
+          <li class="check-item"><i class="fa fa-check"></i> Remote hands</li>
+          <li class="check-item"><i class="fa fa-check"></i> 24/7/365 monitoring and support</li>
+        </ul>
+      </div>
+      <div class="rounded-2xl bg-linear-135 from-brand-strong to-brand-sky p-[clamp(2rem,4vw,3.2rem)] text-center text-white">
+        <h2 class="heading text-white">Custom project?</h2>
+        <p class="mt-2 mb-6 text-lg text-white/90">We will put together the ideal colocation proposal for your operation.</p>
+        <a href="https://wa.me/5511916788282" data-bb-chat="Hi! I'd like a custom colocation project at BB Host." class="btn btn-lg bg-white text-brand-strong"><i class="fa fa-comments"></i> Talk to a specialist</a>
+        <p class="mt-4 text-sm text-white/85">Prefer WhatsApp? <a href="https://wa.me/5511916788282" target="_blank" class="font-semibold text-white underline">+55 11 91678-8282</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="container-site">
+      {% include 'partials/section_heading.html' with eyebrow='How it works' title='From request to move-in' %}
+      <div class="grid gap-5 md:grid-cols-3">
+        {% include 'partials/feature_card.html' with icon='fa-calculator' title='1. Estimate' text='Calculate by rack space (U) and power (watts).' %}
+        {% include 'partials/feature_card.html' with icon='fa-id-card-o' title='2. Sign up and verify' text='Create your account and verify it to unlock the request.' %}
+        {% include 'partials/feature_card.html' with icon='fa-truck' title='3. Move in' text='Schedule and deliver your equipment.' %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

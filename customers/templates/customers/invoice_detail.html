@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Invoice {{ invoice.number }} | BB Host{% endblock %}
+
+{% block content %}
+  <section class="section-tight pb-16">
+    <div class="container-site">
+      {% include 'customers/_header.html' with title='Invoice '|add:invoice.number icon='fa-file-text-o' %}
+
+      <div class="grid items-start gap-6 lg:grid-cols-12">
+        <dl class="card lg:col-span-7">
+          <div class="spec-row"><dt class="spec-key">Description</dt><dd class="spec-value">{{ invoice.description }}</dd></div>
+          <div class="spec-row"><dt class="spec-key">Type</dt><dd class="spec-value">{{ invoice.get_kind_display }}</dd></div>
+          <div class="spec-row"><dt class="spec-key">Issued</dt><dd class="spec-value">{{ invoice.created_at|date:"M j, Y" }}</dd></div>
+          <div class="spec-row"><dt class="spec-key">Due date</dt><dd class="spec-value">{{ invoice.due_date|date:"M j, Y" }}</dd></div>
+          <div class="spec-row"><dt class="spec-key">Status</dt><dd class="spec-value">
+            {% if invoice.is_overdue %}{% include 'customers/_status.html' with status='overdue' label='Overdue' %}{% else %}{% include 'customers/_status.html' with status=invoice.status label=invoice.get_status_display %}{% endif %}
+          </dd></div>
+          {% if invoice.paid_at %}<div class="spec-row"><dt class="spec-key">Paid</dt><dd class="spec-value">{{ invoice.paid_at|date:"M j, Y H:i" }} ({{ invoice.get_payment_method_display }})</dd></div>{% endif %}
+        </dl>
+        <aside class="card card-featured lg:col-span-5">
+          <h2 class="text-2xl">Total</h2>
+          <p class="price my-2">R$ {{ invoice.amount|money }}</p>
+          {% if invoice.status == 'open' %}
+            <p class="hint mb-4">Online payment (PIX and card) is not integrated yet. Contact the team to receive the PIX code for this invoice.</p>
+            <a href="https://wa.me/5511916788282" data-bb-chat="Hi! I'd like to pay invoice {{ invoice.number }} (R$ {{ invoice.amount|money }})." class="btn btn-primary w-full"><i class="fa fa-whatsapp"></i> Get the PIX code on WhatsApp</a>
+          {% else %}
+            <p class="hint">Nothing to pay on this invoice.</p>
+          {% endif %}
+        </aside>
+      </div>
+    </div>
+  </section>
+{% endblock %}

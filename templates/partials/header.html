@@ -1,0 +1,117 @@
+{% load static %}
+{% with nav=request.resolver_match.url_name %}
+<header class="sticky top-0 z-40">
+  <nav class="border-b border-line bg-nav backdrop-blur-md" aria-label="Main">
+    <div class="container-site flex h-14 items-stretch">
+      <a href="{% url 'home:index' %}" class="mr-4 flex items-center p-2">
+        <img src="{% static 'img/logo.png' %}" alt="BB Host logo" class="h-10 w-auto dark:brightness-0 dark:invert">
+      </a>
+
+      {# ---------- Desktop menu ---------- #}
+      <ul class="hidden items-stretch lg:flex">
+        {% with link='px-2 flex items-center text-[0.94rem] font-medium no-underline border-l border-line' %}
+          <li class="flex"><a href="{% url 'home:index' %}" class="{{ link }} {% if nav == 'index' %}text-ink-strong{% else %}text-muted hover:text-ink-strong{% endif %}">Home</a></li>
+          <li class="flex"><a href="{% url 'home:vps' %}" class="{{ link }} {% if nav == 'vps' %}text-ink-strong{% else %}text-muted hover:text-ink-strong{% endif %}">VPS</a></li>
+          <li class="flex"><a href="{% url 'home:dedicated' %}" class="{{ link }} {% if nav == 'dedicated' %}text-ink-strong{% else %}text-muted hover:text-ink-strong{% endif %}">Dedicated</a></li>
+          <li class="flex"><a href="{% url 'home:colocation' %}" class="{{ link }} {% if nav == 'colocation' %}text-ink-strong{% else %}text-muted hover:text-ink-strong{% endif %}">Colocation</a></li>
+          <li class="flex"><a href="{% url 'home:mitigation' %}" class="{{ link }} {% if nav == 'mitigation' %}text-ink-strong{% else %}text-muted hover:text-ink-strong{% endif %}">Mitigation</a></li>
+          <li class="flex"><a href="{% url 'home:about' %}" class="{{ link }} border-r {% if nav == 'about' %}text-ink-strong{% else %}text-muted hover:text-ink-strong{% endif %}">About us</a></li>
+        {% endwith %}
+      </ul>
+
+      <ul class="ml-auto hidden items-stretch lg:flex">
+        <li class="flex">
+          <a href="https://wa.me/5511916788282" target="_blank" class="flex items-center gap-1.5 border-l border-line px-3 text-sm text-muted no-underline hover:text-ink-strong"><i class="fa fa-whatsapp"></i>+55 11 91678-8282</a>
+        </li>
+        <li class="flex">
+          <button type="button" data-dropdown-toggle="lang_menu" class="flex cursor-pointer items-center gap-1.5 border-l border-line px-3 text-sm text-muted hover:text-ink-strong">
+            English (US) <i class="fa fa-caret-down"></i>
+          </button>
+          <div id="lang_menu" class="z-50 hidden w-44 rounded-xl border border-line bg-surface p-1 shadow-card">
+            <a href="#" class="block rounded-lg bg-chip px-3 py-2 text-sm text-chip-ink no-underline">English (US)</a>
+            <a href="#" class="block rounded-lg px-3 py-2 text-sm text-ink no-underline hover:bg-surface-hover">Português (BR)</a>
+            <a href="#" class="block rounded-lg px-3 py-2 text-sm text-ink no-underline hover:bg-surface-hover">Español</a>
+          </div>
+        </li>
+        {% if user.is_authenticated %}
+          <li class="flex">
+            <button type="button" data-dropdown-toggle="account_menu" aria-label="My account" class="flex cursor-pointer items-center gap-1.5 border-x border-line px-3 text-sm font-medium text-ink-strong">
+              <i class="fa fa-user"></i>{{ user.first_name|default:user.email|truncatechars:18 }} <i class="fa fa-caret-down"></i>
+            </button>
+            <div id="account_menu" class="z-50 hidden w-52 rounded-xl border border-line bg-surface p-1 shadow-card">
+              {% with item='block rounded-lg px-3 py-2 text-sm text-ink no-underline hover:bg-surface-hover' %}
+                <a href="{% url 'customers:dashboard' %}" class="{{ item }}">My account</a>
+                <a href="{% url 'customers:services' %}" class="{{ item }}">My services</a>
+                <a href="{% url 'customers:invoices' %}" class="{{ item }}">Invoices</a>
+                <a href="{% url 'customers:tickets' %}" class="{{ item }}">Support tickets</a>
+                <a href="{% url 'customers:profile' %}" class="{{ item }}">Edit account</a>
+                {% if user.is_staff %}<a href="{% url 'admin:index' %}" class="{{ item }}">Administration</a>{% endif %}
+                <hr class="my-1 border-line">
+                <form method="post" action="{% url 'customers:logout' %}">{% csrf_token %}<button type="submit" class="{{ item }} w-full cursor-pointer text-left">Log out</button></form>
+              {% endwith %}
+            </div>
+          </li>
+        {% else %}
+          <li class="flex">
+            <a href="{% url 'customers:login' %}" class="flex items-center border-x border-line px-4 text-[1.05rem] font-bold text-ink-strong no-underline">Log in</a>
+          </li>
+        {% endif %}
+      </ul>
+
+      {# ---------- Mobile toggle ---------- #}
+      <button type="button" data-drawer-target="mobile_menu" data-drawer-show="mobile_menu" data-drawer-placement="right" aria-controls="mobile_menu"
+              class="ml-auto flex cursor-pointer items-center px-2 text-xl text-ink lg:hidden" aria-label="Toggle navigation">
+        <i class="fa fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  {# ---------- Mobile drawer (Flowbite) ---------- #}
+  <div id="mobile_menu" class="fixed top-0 right-0 z-50 h-screen w-72 translate-x-full overflow-y-auto bg-page-soft p-5 transition-transform" tabindex="-1" aria-label="Menu">
+    <button type="button" data-drawer-hide="mobile_menu" aria-controls="mobile_menu" class="absolute top-4 right-4 cursor-pointer text-xl text-muted" aria-label="Close"><i class="fa fa-times"></i></button>
+    <ul class="mt-10 space-y-1">
+      {% with item='block rounded-lg px-3 py-2 font-medium no-underline' %}
+        <li><a href="{% url 'home:index' %}" class="{{ item }} {% if nav == 'index' %}bg-chip text-chip-ink{% else %}text-muted{% endif %}">Home</a></li>
+        <li><a href="{% url 'home:vps' %}" class="{{ item }} {% if nav == 'vps' %}bg-chip text-chip-ink{% else %}text-muted{% endif %}">VPS</a></li>
+        <li><a href="{% url 'home:dedicated' %}" class="{{ item }} {% if nav == 'dedicated' %}bg-chip text-chip-ink{% else %}text-muted{% endif %}">Dedicated</a></li>
+        <li><a href="{% url 'home:colocation' %}" class="{{ item }} {% if nav == 'colocation' %}bg-chip text-chip-ink{% else %}text-muted{% endif %}">Colocation</a></li>
+        <li><a href="{% url 'home:mitigation' %}" class="{{ item }} {% if nav == 'mitigation' %}bg-chip text-chip-ink{% else %}text-muted{% endif %}">Mitigation</a></li>
+        <li><a href="{% url 'home:about' %}" class="{{ item }} {% if nav == 'about' %}bg-chip text-chip-ink{% else %}text-muted{% endif %}">About us</a></li>
+      {% endwith %}
+    </ul>
+    <div class="mt-6 space-y-2">
+      <a href="https://wa.me/5511916788282" target="_blank" class="btn btn-ghost w-full"><i class="fa fa-whatsapp"></i>+55 11 91678-8282</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'customers:dashboard' %}" class="btn btn-outline w-full">My account</a>
+      {% else %}
+        <a href="{% url 'customers:login' %}" class="btn btn-outline w-full">Log in</a>
+      {% endif %}
+      <a href="{% url 'home:contact' %}" class="btn btn-primary w-full">Contact us</a>
+    </div>
+  </div>
+
+  {# ---------- Promo banner (coupon flagged "show in the top banner" in the admin) ---------- #}
+  {% if promo %}
+    <div class="bg-[#04060b] bg-[radial-gradient(120%_220%_at_0%_0%,rgb(37_99_235/0.35)_0%,transparent_55%),radial-gradient(120%_220%_at_100%_100%,rgb(56_189_248/0.25)_0%,transparent_55%)] px-3 py-1.5 text-center text-white"
+         role="region" aria-label="{{ promo.banner_tag|default:'Promotion' }}">
+      <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[0.92rem]">
+        {% if promo.banner_tag %}<span class="rounded-full bg-white px-2.5 py-0.5 text-[0.72rem] font-extrabold tracking-[0.14em] text-[#04060b]">{{ promo.banner_tag }}</span>{% endif %}
+        <span><strong class="bg-linear-135 from-blue-400 to-sky-400 bg-clip-text font-extrabold text-transparent">{{ promo.discount_percent|floatformat:"-2" }}% OFF</strong> {{ promo.banner_text }}</span>
+        <button type="button" id="promo_code" data-code="{{ promo.code }}" title="Copy coupon"
+                class="group inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-dashed border-slate-400/50 px-2 py-0.5 hover:border-blue-300 hover:bg-blue-500/20 data-[copied]:border-solid data-[copied]:border-green-400">
+          <span class="hidden text-[0.78rem] text-slate-400 sm:inline">code</span>
+          <span class="font-mono font-extrabold tracking-wider">{{ promo.code }}</span>
+          <span class="text-xs text-blue-300 group-data-[copied]:hidden"><i class="fa fa-clone"></i></span>
+          <span class="hidden text-xs text-green-400 group-data-[copied]:inline"><i class="fa fa-check"></i></span>
+        </button>
+        {% if promo.valid_until %}<span class="hidden text-[0.85rem] text-slate-400 sm:inline">until {{ promo.valid_until|date:"M j" }}</span>{% endif %}
+        <a href="{% if promo.product == 'dedicated' %}{% url 'home:dedicated' %}{% else %}{% url 'home:vps' %}{% endif %}"
+           class="rounded-full bg-white px-3 py-1 text-[0.85rem] font-bold text-[#04060b] no-underline transition hover:translate-x-0.5 hover:bg-blue-100">
+          {% if promo.product == 'dedicated' %}See dedicated servers{% else %}Build my VPS{% endif %} <i class="fa fa-arrow-right"></i>
+        </a>
+      </div>
+      {% if promo.banner_fine_print %}<p class="mt-0.5 text-[0.72rem] text-slate-400">{{ promo.banner_fine_print }}</p>{% endif %}
+    </div>
+  {% endif %}
+</header>
+{% endwith %}

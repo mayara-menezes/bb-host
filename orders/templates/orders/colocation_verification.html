@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}My colocation | BB Host{% endblock %}
+
+{% block content %}
+  <section class="section-tight pb-16">
+    <div class="container-site">
+      {% include 'customers/_header.html' with title='My colocation' icon='fa-th-large' %}
+      <div class="card max-w-xl">
+        <p class="hint">Colocation quotes are only available to verified accounts.</p>
+        <h2 class="mt-2 text-xl"><i class="fa fa-id-card-o mr-1"></i> Unverified account</h2>
+        <p class="mt-2 text-ink">Verify your account to unlock colocation quotes and request the move-in of your equipment.</p>
+        <p class="hint mt-2">Verification means signing an online contract with a photo of an ID document and a selfie. It takes a few minutes.</p>
+        <div class="mt-5 flex flex-wrap gap-2">
+          <a href="{% url 'customers:ticket_new' %}?subject=Account%20verification" class="btn btn-primary">Start account verification</a>
+          <a href="{% url 'customers:dashboard' %}" class="btn btn-ghost">Back to dashboard</a>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

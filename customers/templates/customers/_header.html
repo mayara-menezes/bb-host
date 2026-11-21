@@ -1,0 +1,8 @@
+{# Shared header of the customer area pages. Usage: include with title and icon. #}
+<div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+  <div>
+    <span class="eyebrow"><i class="fa {{ icon|default:'fa-user' }}"></i> Customer area</span>
+    <h1 class="heading mt-4">{{ title }}</h1>
+  </div>
+  {% include 'customers/_menu.html' %}
+</div>

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Request colocation | BB Host{% endblock %}
+
+{% block content %}
+  <section class="section-tight pb-16">
+    <div class="container-site">
+      {% include 'customers/_header.html' with title='Request colocation' icon='fa-th-large' %}
+
+      {% if errors %}
+        <div class="alert alert-error mb-6">{% for e in errors %}<p>{{ e }}</p>{% endfor %}</div>
+      {% endif %}
+
+      <form method="post" class="grid items-start gap-6 lg:grid-cols-12" novalidate>
+        {% csrf_token %}
+        <div class="card lg:col-span-7">
+          {% include 'orders/_colocation_rows.html' with rows=items %}
+          <div class="mt-6 grid gap-4 border-t border-line pt-6 md:grid-cols-12">
+            <div class="md:col-span-5">{% include 'partials/field.html' with field=form.desired_move_in_date %}</div>
+            <div class="md:col-span-12">{% include 'partials/field.html' with field=form.notes %}</div>
+          </div>
+        </div>
+
+        <aside class="card card-featured lg:sticky lg:top-24 lg:col-span-5">
+          <h2 class="text-2xl">Colocation</h2>
+          <p class="hint mb-3">Recurring monthly estimate</p>
+          <p><span class="price">R$ <span id="colo_estimate">0.00</span></span> <span class="price-unit">/month</span></p>
+          <p class="hint my-4">Network ports, full racks and setup fees are detailed in the proposal.</p>
+          <button type="submit" class="btn btn-primary w-full">Send request <i class="fa fa-arrow-right"></i></button>
+        </aside>
+      </form>
+    </div>
+  </section>
+{% endblock %}

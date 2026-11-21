@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Ticket {{ ticket.code }} | BB Host{% endblock %}
+
+{% block content %}
+  <section class="section-tight pb-16">
+    <div class="container-site">
+      {% include 'customers/_header.html' with title=ticket.subject icon='fa-life-ring' %}
+
+      <div class="mb-6 flex flex-wrap items-center gap-2">
+        <span class="badge">{{ ticket.code }}</span>
+        <span class="badge">{{ ticket.category }}</span>
+        {% if ticket.service %}<span class="badge">{{ ticket.service.code }}</span>{% endif %}
+        {% include 'customers/_status.html' with status=ticket.status label=ticket.get_status_display %}
+      </div>
+
+      <div class="mb-6 flex flex-col gap-3">
+        {% for m in messages_list %}
+          <div class="max-w-[80%] rounded-2xl border px-4 py-3 {% if m.from_staff %}self-start border-line bg-surface{% else %}self-end border-chip-line bg-chip{% endif %}">
+            <p class="mb-1 text-xs text-muted">
+              <b>{% if m.from_staff %}BB Host team{% else %}{{ m.author.get_full_name|default:m.author.email }}{% endif %}</b>
+              · {{ m.created_at|date:"M j, Y H:i" }}
+            </p>
+            <div class="text-ink">{{ m.body|linebreaksbr }}</div>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if ticket.is_closed %}<p class="hint mb-3">This ticket is closed. Replying below reopens it.</p>{% endif %}
+      <form method="post" class="card" novalidate>
+        {% csrf_token %}
+        {% include 'partials/field.html' with field=form.body %}
+        <div class="mt-4 flex justify-between">
+          {% if not ticket.is_closed %}
+            <button type="submit" name="action" value="close" class="btn btn-ghost" formnovalidate>Close ticket</button>
+          {% else %}<span></span>{% endif %}
+          <button type="submit" name="action" value="reply" class="btn btn-primary">Send reply</button>
+        </div>
+      </form>
+    </div>
+  </section>
+{% endblock %}

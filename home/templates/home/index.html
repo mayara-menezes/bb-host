@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}BB Host | Data center, VPS, dedicated servers and Anti-DDoS in Brazil{% endblock %}
+
+{% block content %}
+  <section class="hero section">
+    <div class="container-site mx-auto max-w-3xl text-center">
+      <span class="eyebrow"><i class="fa fa-bolt"></i> Quality data center · since 2013</span>
+      <h1 class="display mt-6">
+        High-performance infrastructure with
+        <span class="gradient-text">unlimited DDoS protection</span>
+      </h1>
+      <p class="lead mt-6">
+        VPS, dedicated servers and colocation on a high-capacity network in Brazil.
+        No null-routing, no blackholing. Real mitigation, 24/7/365.
+      </p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a href="{% url 'home:vps' %}" class="btn btn-primary btn-lg">See VPS plans <i class="fa fa-arrow-right"></i></a>
+        <a href="{% url 'home:dedicated' %}" class="btn btn-outline btn-lg">Dedicated servers</a>
+      </div>
+      <div class="mt-12 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 font-medium text-muted">
+        <span class="flex items-center gap-2"><i class="fa fa-shield text-chip-ink"></i> 500 Tbps of mitigation</span>
+        <span class="flex items-center gap-2"><i class="fa fa-life-ring text-chip-ink"></i> 24/7/365 support</span>
+        <span class="flex items-center gap-2"><i class="fa fa-check-circle text-chip-ink"></i> MANRS member</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="container-site">
+      {% include 'partials/section_heading.html' with eyebrow='What we offer' title='Everything your application needs to scale' lead='From a single virtual machine to a full rack, on the same protected network.' %}
+
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {% url 'home:vps' as vps_url %}{% url 'home:dedicated' as dedicated_url %}{% url 'home:colocation' as colocation_url %}{% url 'home:mitigation' as mitigation_url %}
+        <a href="{{ vps_url }}" class="card card-hover flex flex-col no-underline">
+          <div class="icon-tile"><i class="fa fa-server"></i></div>
+          <h3 class="text-xl">VPS</h3>
+          <p class="mt-1.5 mb-4 flex-1 text-muted">Configurable virtual machines (CPU, RAM and disk) with automatic delivery.</p>
+          <span class="badge badge-primary self-start">Build yours <i class="fa fa-arrow-right"></i></span>
+        </a>
+        <a href="{{ dedicated_url }}" class="card card-hover flex flex-col no-underline">
+          <div class="icon-tile"><i class="fa fa-hdd-o"></i></div>
+          <h3 class="text-xl">Dedicated servers</h3>
+          <p class="mt-1.5 mb-4 flex-1 text-muted">Exclusive high-performance hardware with IPMI and fast delivery.</p>
+          <span class="badge badge-primary self-start">See catalog <i class="fa fa-arrow-right"></i></span>
+        </a>
+        <a href="{{ colocation_url }}" class="card card-hover flex flex-col no-underline">
+          <div class="icon-tile"><i class="fa fa-th-large"></i></div>
+          <h3 class="text-xl">Colocation</h3>
+          <p class="mt-1.5 mb-4 flex-1 text-muted">Your hardware in our data center, with redundant power and network.</p>
+          <span class="badge badge-primary self-start">Learn more <i class="fa fa-arrow-right"></i></span>
+        </a>
+        <a href="{{ mitigation_url }}" class="card card-hover flex flex-col no-underline">
+          <div class="icon-tile"><i class="fa fa-shield"></i></div>
+          <h3 class="text-xl">Anti-DDoS</h3>
+          <p class="mt-1.5 mb-4 flex-1 text-muted">Smart mitigation for any IP, whatever the size of the attack.</p>
+          <span class="badge badge-primary self-start">Get protected <i class="fa fa-arrow-right"></i></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-site grid items-center gap-12 lg:grid-cols-2">
+      <div>
+        <span class="eyebrow"><i class="fa fa-shield"></i> Always-on protection</span>
+        <h2 class="heading mt-4">Truly unlimited DDoS protection.</h2>
+        <p class="lead mt-3">
+          We mitigate attacks of any size without taking your IP down.
+          No null-routing or blackholing: your service stays online.
+        </p>
+        <ul class="mt-5">
+          <li class="check-item"><i class="fa fa-check"></i> 500 Tbps of distributed mitigation capacity</li>
+          <li class="check-item"><i class="fa fa-check"></i> Dedicated traffic scrubbing centers</li>
+          <li class="check-item"><i class="fa fa-check"></i> Smart, automatic release systems</li>
+          <li class="check-item"><i class="fa fa-check"></i> Included in VPS and dedicated plans</li>
+        </ul>
+        <a href="{% url 'home:about' %}#anti-ddos" class="btn btn-outline mt-6">How the protection works</a>
+      </div>
+      <div class="card grid grid-cols-2 gap-4">
+        {% include 'partials/stat.html' with value='500 Tbps' label='Mitigation capacity' gradient=True %}
+        {% include 'partials/stat.html' with value='0' label='Null-routes on your network' %}
+        {% include 'partials/stat.html' with value='24/7' label='Monitoring and support' %}
+        {% include 'partials/stat.html' with value='2013' label='Online since' %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight pb-16">
+    <div class="container-site">
+      <div class="rounded-2xl bg-linear-135 from-brand-strong to-brand-sky p-[clamp(2rem,4vw,3.2rem)] text-center text-white">
+        <h2 class="heading text-white">Ready to launch your infrastructure?</h2>
+        <p class="mt-2 mb-6 text-lg text-white/90">Deploy in minutes or talk to our team. Assisted migration at no cost.</p>
+        <div class="flex flex-wrap justify-center gap-3">
+          <a href="{% url 'home:dedicated' %}" class="btn btn-lg bg-white text-brand-strong hover:-translate-y-px">Get started</a>
+          <a href="https://wa.me/5511916788282" data-bb-chat="Hi! I'd like to talk to the BB Host sales team." class="btn btn-lg border-white/60 text-white hover:bg-white/10"><i class="fa fa-comments"></i> Talk to sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

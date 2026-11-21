@@ -1,0 +1,58 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}BB Host{% endblock %}</title>
+  <meta name="description" content="{% block description %}VPS, dedicated servers and colocation on a high-capacity network in Brazil, with unlimited DDoS protection.{% endblock %}">
+  <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+
+  {# Apply the saved theme before first paint to avoid a flash of the wrong theme #}
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem("bb-theme") === "dark") { document.documentElement.classList.add("dark"); }
+      } catch (e) { /* localStorage blocked: stay on the light theme */ }
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@700;800&family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{% static 'css/output.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="flex min-h-screen flex-col">
+  {% include 'partials/header.html' %}
+
+  <main class="flex-1">
+    {% if messages %}
+      <div class="container-site space-y-2 pt-6">
+        {% for message in messages %}
+          <div class="alert {% if message.level_tag == 'error' %}alert-error{% else %}alert-success{% endif %}" role="status">
+            <i class="fa {% if message.level_tag == 'error' %}fa-exclamation-circle{% else %}fa-check-circle{% endif %} me-2"></i>{{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include 'partials/footer.html' %}
+
+  <button type="button" id="theme_toggle" title="Switch light/dark theme" aria-label="Switch theme"
+          class="fixed bottom-5 left-5 z-40 grid size-11 cursor-pointer place-items-center rounded-full border border-line bg-surface text-brand shadow-card transition hover:-translate-y-0.5">
+    <i class="fa fa-moon-o"></i>
+  </button>
+
+  <a href="https://wa.me/5511916788282" data-bb-chat="Hi! I found you through the BB Host website." title="Talk to us" aria-label="Open chat"
+     class="fixed right-5 bottom-5 z-40 grid size-14 place-items-center rounded-full bg-linear-135 from-brand-strong to-brand-sky text-2xl text-white no-underline shadow-[0_6px_20px_rgb(37_99_235/0.45)] transition hover:-translate-y-0.5">
+    <i class="fa fa-comments"></i>
+  </a>
+
+  <script src="{% static 'js/flowbite.min.js' %}"></script>
+  <script src="{% static 'js/site.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Invoices | BB Host{% endblock %}
+
+{% block content %}
+  <section class="section-tight pb-16">
+    <div class="container-site">
+      {% include 'customers/_header.html' with title='Invoices' icon='fa-file-text-o' %}
+
+      <div class="mb-4 flex gap-2">
+        <a href="?filter=all" class="pill {% if filter == 'all' %}pill-active{% endif %}">All</a>
+        <a href="?filter=open" class="pill {% if filter == 'open' %}pill-active{% endif %}">Open</a>
+        <a href="?filter=paid" class="pill {% if filter == 'paid' %}pill-active{% endif %}">Paid</a>
+      </div>
+
+      {% if invoices %}
+        <div class="card overflow-x-auto p-0">
+          <table class="data-table">
+            <thead><tr><th>Number</th><th>Description</th><th>Due date</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+              {% for i in invoices %}
+                <tr>
+                  <td><a href="{% url 'customers:invoice' i.pk %}">{{ i.number }}</a></td>
+                  <td>{{ i.description }}</td>
+                  <td>{{ i.due_date|date:"M j, Y" }}</td>
+                  <td>R$ {{ i.amount|money }}</td>
+                  <td>{% if i.is_overdue %}{% include 'customers/_status.html' with status='overdue' label='Overdue' %}{% else %}{% include 'customers/_status.html' with status=i.status label=i.get_status_display %}{% endif %}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div class="card py-12 text-center"><p class="lead">There are no invoices for your account at the moment.</p></div>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}

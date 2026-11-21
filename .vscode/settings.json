@@ -1,0 +1,8 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+  "tailwindCSS.experimental.configFile": "static/src/input.css",
+  "tailwindCSS.includeLanguages": { "django-html": "html" },
+  "files.associations": { "**/templates/**/*.html": "django-html" },
+  "emmet.includeLanguages": { "django-html": "html" },
+  "css.lint.unknownAtRules": "ignore"
+}

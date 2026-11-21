@@ -1,0 +1,4 @@
+# Store LF line endings in the repository, whatever the OS of whoever clones it
+* text=auto eol=lf
+*.png binary
+*.jpg binary

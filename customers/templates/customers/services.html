@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}My services | BB Host{% endblock %}
+
+{% block content %}
+  <section class="section-tight pb-16">
+    <div class="container-site">
+      {% include 'customers/_header.html' with title='My services' icon='fa-server' %}
+
+      {% if services %}
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {% for s in services %}
+            <article class="card flex flex-col">
+              <div class="mb-2 flex items-start justify-between gap-2">
+                <div>
+                  <p class="hint">{{ s.get_kind_display }} · {{ s.code }}</p>
+                  <h2 class="text-xl">{{ s.hostname|default:s.description }}</h2>
+                </div>
+                {% include 'customers/_status.html' with status=s.status label=s.get_status_display %}
+              </div>
+              <dl class="my-3 flex-1">
+                {% if s.hostname %}<div class="spec-row"><dt class="spec-key">Configuration</dt><dd class="spec-value">{{ s.description }}</dd></div>{% endif %}
+                <div class="spec-row"><dt class="spec-key">Primary IP</dt><dd class="spec-value">{{ s.primary_ip|default:"to be assigned" }}</dd></div>
+                <div class="spec-row"><dt class="spec-key">Monthly price</dt><dd class="spec-value">R$ {{ s.monthly_price|money }}</dd></div>
+                <div class="spec-row"><dt class="spec-key">Next renewal</dt><dd class="spec-value">{{ s.next_renewal|date:"M j, Y"|default:"—" }}</dd></div>
+                <div class="spec-row"><dt class="spec-key">Auto-renew</dt><dd class="spec-value">{{ s.auto_renew|yesno:"Yes,No" }}</dd></div>
+              </dl>
+              {% if s.extra_ips %}<p class="hint mb-2"><b>Additional IPs:</b><br>{{ s.extra_ips|linebreaksbr }}</p>{% endif %}
+              {% if s.access_details %}
+                <details class="mb-2">
+                  <summary class="cursor-pointer text-sm font-semibold text-muted"><i class="fa fa-key mr-1"></i>Access details</summary>
+                  <pre class="mt-2 rounded-xl border border-line bg-page p-3 text-sm whitespace-pre-wrap text-ink">{{ s.access_details }}</pre>
+                </details>
+              {% endif %}
+              <a href="{% url 'customers:ticket_new' %}?subject={{ s.code|urlencode }}%20-%20" class="btn btn-ghost w-full"><i class="fa fa-life-ring"></i> Open a ticket about this service</a>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="card py-12 text-center">
+          <p class="lead mb-4">You don't have any active services yet.</p>
+          <div class="flex flex-wrap justify-center gap-2">
+            <a href="{% url 'home:vps' %}" class="btn btn-primary">Build a VPS</a>
+            <a href="{% url 'home:dedicated' %}" class="btn btn-outline">See dedicated servers</a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}

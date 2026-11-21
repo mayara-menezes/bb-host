@@ -1,0 +1,54 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Tailwind: build",
+      "detail": "Builds and minifies static/css/output.css",
+      "type": "npm",
+      "script": "build",
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": [],
+      "presentation": { "reveal": "silent", "panel": "shared", "clear": true }
+    },
+    {
+      "label": "Tailwind: watch",
+      "detail": "Rebuilds the CSS on every change",
+      "type": "npm",
+      "script": "dev",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "tailwind",
+        "pattern": { "regexp": "^__never_match__$" },
+        "background": {
+          "activesBegins": true,
+          "beginsPattern": "tailwindcss",
+          "endsPattern": "Done in"
+        }
+      },
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Django: runserver",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+      "args": ["manage.py", "runserver"],
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "django",
+        "pattern": { "regexp": "^__never_match__$" },
+        "background": {
+          "activesBegins": true,
+          "beginsPattern": "Watching for file changes|Performing system checks",
+          "endsPattern": "Quit the server with"
+        }
+      },
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Dev: Tailwind watch + Django",
+      "dependsOn": ["Tailwind: watch", "Django: runserver"],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
+    }
+  ]
+}

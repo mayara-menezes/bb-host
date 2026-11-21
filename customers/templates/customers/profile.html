@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}My details | BB Host{% endblock %}
+
+{% block content %}
+  <section class="section-tight pb-16">
+    <div class="container-site">
+      {% include 'customers/_header.html' with title='My details' icon='fa-id-card-o' %}
+
+      <form method="post" class="card" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        <h2 class="text-xl">Identification</h2>
+        <p class="hint mt-1 mb-4">Login e-mail: <b>{{ user.email }}</b> · <a href="{% url 'customers:password' %}">Change password</a></p>
+        <div class="mb-8 grid gap-4 md:grid-cols-12">
+          <div class="md:col-span-6">{% include 'partials/field.html' with field=user_form.first_name %}</div>
+          <div class="md:col-span-6">{% include 'partials/field.html' with field=user_form.last_name %}</div>
+          <div class="md:col-span-4">{% include 'partials/field.html' with field=profile_form.document_type %}</div>
+          <div class="md:col-span-4">{% include 'partials/field.html' with field=profile_form.document_number %}</div>
+          <div class="md:col-span-4">{% include 'partials/field.html' with field=profile_form.phone %}</div>
+          <div class="md:col-span-12">{% include 'partials/field.html' with field=profile_form.company_name %}</div>
+        </div>
+
+        <h2 class="mb-4 text-xl">Address</h2>
+        <div class="grid gap-4 md:grid-cols-12">
+          <div class="md:col-span-4">{% include 'partials/field.html' with field=profile_form.country %}</div>
+          <div class="md:col-span-3">{% include 'partials/field.html' with field=profile_form.postal_code %}</div>
+          <div class="md:col-span-5">{% include 'partials/field.html' with field=profile_form.city %}</div>
+          <div class="md:col-span-7">{% include 'partials/field.html' with field=profile_form.street %}</div>
+          <div class="md:col-span-2">{% include 'partials/field.html' with field=profile_form.number %}</div>
+          <div class="md:col-span-3">{% include 'partials/field.html' with field=profile_form.state %}</div>
+          <div class="md:col-span-6">{% include 'partials/field.html' with field=profile_form.complement %}</div>
+          <div class="md:col-span-6">{% include 'partials/field.html' with field=profile_form.district %}</div>
+        </div>
+        <div class="mt-6 text-right">
+          <button type="submit" class="btn btn-primary">Save details</button>
+        </div>
+      </form>
+    </div>
+  </section>
+{% endblock %}

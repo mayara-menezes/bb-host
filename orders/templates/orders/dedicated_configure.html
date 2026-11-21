@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ server.name }} | Dedicated servers | BB Host{% endblock %}
+
+{% block content %}
+  <section class="section-tight pb-16">
+    <div class="container-site">
+      <a href="{% url 'home:dedicated' %}" class="text-sm text-muted no-underline hover:text-ink-strong"><i class="fa fa-arrow-left"></i> Back to plans</a>
+      <div class="mt-4 mb-8 flex flex-wrap items-end justify-between gap-2">
+        <div>
+          <span class="eyebrow"><i class="fa fa-hdd-o"></i> Dedicated server</span>
+          <h1 class="heading mt-4">{{ server.name }}</h1>
+        </div>
+        {% if server.available %}
+          <span class="badge badge-success">{% if server.stock %}{{ server.stock }} in stock{% else %}Available{% endif %}</span>
+        {% else %}
+          <span class="badge">On request</span>
+        {% endif %}
+      </div>
+
+      <form method="post" class="grid items-start gap-6 lg:grid-cols-12" id="ded_cfg" data-base="{{ server.monthly_price|stringformat:'.2f' }}" novalidate>
+        {% csrf_token %}
+        <div class="space-y-6 lg:col-span-7">
+          <div class="card">
+            <span class="eyebrow">Selected configuration</span>
+            <dl class="mt-4">
+              {% for label, icon, value in server.specs %}
+                <div class="spec-row"><dt class="spec-key"><i class="fa {{ icon }} fa-fw"></i> {{ label }}</dt><dd class="spec-value">{{ value }}</dd></div>
+              {% endfor %}
+            </dl>
+            {% if server.description %}<p class="hint mt-3">{{ server.description|linebreaksbr }}</p>{% endif %}
+          </div>
+
+          {% if server.available %}
+            <div class="card space-y-4">
+              {% if form.non_field_errors %}<div class="alert alert-error">{{ form.non_field_errors|join:" " }}</div>{% endif %}
+              {% if form.bandwidth %}{% include 'partials/field.html' with field=form.bandwidth %}{% endif %}
+              {% include 'partials/field.html' with field=form.operating_system %}
+              <div data-when-os="description">{% include 'partials/field.html' with field=form.custom_os %}</div>
+              <div data-when-os="license">{% include 'partials/field.html' with field=form.panel_license %}</div>
+              {% if form.partitioning %}{% include 'partials/field.html' with field=form.partitioning %}{% endif %}
+              {% include 'partials/field.html' with field=form.ip_block %}
+              {% include 'partials/field.html' with field=form.hostname %}
+              {% include 'partials/field.html' with field=form.ssh_key %}
+              {% include 'partials/field.html' with field=form.notes %}
+            </div>
+          {% endif %}
+        </div>
+
+        <aside class="card card-featured lg:sticky lg:top-24 lg:col-span-5">
+          <h2 class="text-2xl">Summary</h2>
+          <p class="hint mb-3">{{ server.name }}</p>
+          <p><span class="price">R$ <span id="ded_total">{{ server.monthly_price|money }}</span></span> <span class="price-unit">/month</span></p>
+          {% if server.setup_fee %}<p class="hint mt-1">+ R$ {{ server.setup_fee|money }} one-time setup fee</p>{% endif %}
+
+          {% if server.available %}
+            <div class="mt-4">{% include 'partials/field.html' with field=form.coupon %}</div>
+            {% if user.is_authenticated %}
+              <button type="submit" class="btn btn-primary mt-4 w-full">Order <i class="fa fa-arrow-right"></i></button>
+            {% else %}
+              <button type="submit" class="btn btn-primary mt-4 w-full">Log in and order <i class="fa fa-arrow-right"></i></button>
+              <p class="hint mt-2 text-center">No account? <a href="{% url 'customers:signup' %}?next={{ request.path|urlencode }}">Sign up</a></p>
+            {% endif %}
+            <p class="hint mt-3"><i class="fa fa-check-circle"></i> Automatic delivery after payment.</p>
+          {% else %}
+            <a href="https://wa.me/5511916788282" data-bb-chat="Hi! I'd like to know when the {{ server.name }} server is back." class="btn btn-outline mt-4 w-full"><i class="fa fa-comments"></i> Talk to sales</a>
+            <details class="group mt-2.5">
+              <summary class="cursor-pointer list-none rounded-xl border border-dashed border-line-strong p-2 text-center text-sm font-semibold text-muted hover:bg-surface-hover group-open:border-solid [&::-webkit-details-marker]:hidden">
+                <i class="fa fa-bell-o mr-1"></i>Notify me when it's back
+              </summary>
+              <div class="mt-2">
+                <input type="email" form="notify_form" name="email" required class="form-input text-sm" placeholder="you@example.com" value="{{ user.email }}">
+                <button type="submit" form="notify_form" class="btn btn-primary btn-sm mt-2 w-full">Notify me</button>
+              </div>
+            </details>
+          {% endif %}
+        </aside>
+      </form>
+      {% if not server.available %}
+        <form id="notify_form" method="post" action="{% url 'home:notify_me' server.pk %}">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.path }}">
+          <input type="text" name="website" class="hidden" tabindex="-1" autocomplete="off">
+        </form>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,21 @@
+{
+  "name": "bb-host",
+  "version": "1.0.0",
+  "description": "Front-end tooling (Tailwind CSS v4 + Flowbite) for the BB Host Django project",
+  "scripts": {
+    "copy:flowbite": "node -e \"require('fs').copyFileSync('node_modules/flowbite/dist/flowbite.min.js','static/js/flowbite.min.js')\"",
+    "build:css": "npx @tailwindcss/cli -i ./static/src/input.css -o ./static/css/output.css --minify",
+    "watch:css": "npx @tailwindcss/cli -i ./static/src/input.css -o ./static/css/output.css --watch",
+    "build": "npm run copy:flowbite && npm run build:css",
+    "dev": "npm run copy:flowbite && npm run watch:css",
+    "postinstall": "npm run copy:flowbite"
+  },
+  "author": "Mayara Menezes",
+  "license": "MIT",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.5",
+    "flowbite": "^4.0.2",
+    "tailwindcss": "^4.3.5"
+  },
+  "private": true
+}

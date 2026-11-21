@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}My tickets | BB Host{% endblock %}
+
+{% block content %}
+  <section class="section-tight pb-16">
+    <div class="container-site">
+      {% include 'customers/_header.html' with title='My tickets' icon='fa-life-ring' %}
+
+      <div class="mb-4 text-right">
+        <a href="{% url 'customers:ticket_new' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Open a ticket</a>
+      </div>
+
+      {% if tickets %}
+        <div class="card overflow-x-auto p-0">
+          <table class="data-table">
+            <thead><tr><th>#</th><th>Subject</th><th>Category</th><th>Status</th><th>Updated</th></tr></thead>
+            <tbody>
+              {% for t in tickets %}
+                <tr>
+                  <td><a href="{% url 'customers:ticket' t.pk %}">{{ t.code }}</a></td>
+                  <td><a href="{% url 'customers:ticket' t.pk %}">{{ t.subject }}</a></td>
+                  <td>{{ t.category }}</td>
+                  <td>{% include 'customers/_status.html' with status=t.status label=t.get_status_display %}</td>
+                  <td>{{ t.updated_at|date:"M j, Y H:i" }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div class="card py-12 text-center">
+          <p class="lead">You don't have any tickets yet. Click <b>Open a ticket</b> to start a conversation with support.</p>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}

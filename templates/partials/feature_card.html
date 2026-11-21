@@ -1,0 +1,6 @@
+{# Card with icon, title and text. Usage: {% include 'partials/feature_card.html' with icon='fa-bolt' title='...' text='...' %} #}
+<div class="card card-hover h-full">
+  <div class="icon-tile"><i class="fa {{ icon }}"></i></div>
+  <h3 class="mb-1.5 text-xl">{{ title }}</h3>
+  <p class="text-muted">{{ text }}</p>
+</div>

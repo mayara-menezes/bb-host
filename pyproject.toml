@@ -1,0 +1,21 @@
+[project]
+name = "bb-host"
+version = "1.0.0"
+description = "Functional Django replica of a hosting provider website and customer area (VPS, dedicated servers, colocation)."
+requires-python = ">=3.12"
+authors = [{ name = "Mayara Menezes" }]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = ["*/migrations/*", "referencia"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "DJ"]
+ignore = ["DJ001"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["config", "home", "catalog", "customers", "orders"]
+
+[tool.ruff.format]
+quote-style = "single"

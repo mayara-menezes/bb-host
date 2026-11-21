@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}About us: data center, network and Anti-DDoS | BB Host{% endblock %}
+
+{% block content %}
+  <section class="hero section-tight">
+    <div class="container-site mx-auto max-w-3xl text-center">
+      <span class="eyebrow"><i class="fa fa-building"></i> About BB Host</span>
+      <h1 class="display mt-6">Serious hosting, <span class="gradient-text">since 2013</span></h1>
+      <p class="lead mt-6">
+        We run a quality data center focused on performance, availability and network security,
+        serving everyone from developers to large operations in Brazil.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container-site">
+      <div class="card grid grid-cols-2 gap-4 lg:grid-cols-4 lg:p-8">
+        {% include 'partials/stat.html' with value='500 Tbps' label='Mitigation capacity' gradient=True %}
+        {% include 'partials/stat.html' with value='10+ years' label='In operation' %}
+        {% include 'partials/stat.html' with value='24/7/365' label='Expert support' %}
+        {% include 'partials/stat.html' with value='MANRS' label='Secure routing' %}
+      </div>
+    </div>
+  </section>
+
+  <section id="infra" class="section band">
+    <div class="container-site grid items-center gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        <span class="eyebrow"><i class="fa fa-server"></i> Infrastructure</span>
+        <h2 class="heading mt-4">A quality data center</h2>
+        <p class="lead mt-3">
+          Redundant power, cooling and connectivity, with smart automation systems for delivering
+          and releasing resources.
+        </p>
+      </div>
+      <div class="grid gap-5 sm:grid-cols-2 lg:col-span-7">
+        {% include 'partials/feature_card.html' with icon='fa-bolt' title='Redundant power' text='A+B feeds with UPS and generators.' %}
+        {% include 'partials/feature_card.html' with icon='fa-snowflake-o' title='Cooling' text='Redundant precision cooling.' %}
+        {% include 'partials/feature_card.html' with icon='fa-cogs' title='Automation' text='Automatic provisioning and release.' %}
+        {% include 'partials/feature_card.html' with icon='fa-lock' title='Physical security' text='Controlled access and 24h monitoring.' %}
+      </div>
+    </div>
+  </section>
+
+  <section id="network" class="section">
+    <div class="container-site grid items-center gap-12 lg:grid-cols-12">
+      <div class="lg:order-2 lg:col-span-5">
+        <span class="eyebrow"><i class="fa fa-sitemap"></i> Network</span>
+        <h2 class="heading mt-4">Connectivity and peering</h2>
+        <p class="lead mt-3">
+          Multiple internet exchange points and distributed scrubbing centers, with secure routing
+          certified by MANRS.
+        </p>
+        <a href="https://status.bbhost.com.br" target="_blank" class="btn btn-outline mt-5"><i class="fa fa-heartbeat"></i> See network status</a>
+      </div>
+      <ul class="card lg:order-1 lg:col-span-7">
+        <li class="check-item"><i class="fa fa-check"></i> Several internet exchange points (IXPs) and PoPs</li>
+        <li class="check-item"><i class="fa fa-check"></i> Redundant high-capacity uplinks</li>
+        <li class="check-item"><i class="fa fa-check"></i> MANRS member (Mutually Agreed Norms for Routing Security)</li>
+        <li class="check-item"><i class="fa fa-check"></i> Traffic scrubbing centers dedicated to Anti-DDoS</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="anti-ddos" class="section band">
+    <div class="container-site">
+      {% include 'partials/section_heading.html' with icon='fa-shield' eyebrow='Anti-DDoS' title='Unlimited DDoS protection' lead='We mitigate attacks of any size with no null-routing and no blackholing. Your service stays reachable during the attack.' %}
+      <div class="grid gap-5 md:grid-cols-3">
+        {% include 'partials/feature_card.html' with icon='fa-shield' title='No null-route / blackhole' text='We never take your IP down to contain an attack.' %}
+        {% include 'partials/feature_card.html' with icon='fa-tachometer' title='500 Tbps of mitigation' text='Distributed capacity of the global Cloudflare Magic Transit network.' %}
+        {% include 'partials/feature_card.html' with icon='fa-magic' title='Smart systems' text='Automatic detection and release, with no manual intervention.' %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-site grid gap-6 lg:grid-cols-12">
+      <div class="card lg:col-span-7">
+        <span class="eyebrow">The company</span>
+        <h2 class="mt-4 text-3xl">BB Host LTDA</h2>
+        <dl class="mt-4">
+          <div class="spec-row"><dt class="spec-key">CNPJ (company ID)</dt><dd class="spec-value">27.041.737/0001-09</dd></div>
+          <div class="spec-row"><dt class="spec-key">In operation since</dt><dd class="spec-value">2013</dd></div>
+          <div class="spec-row"><dt class="spec-key">Support</dt><dd class="spec-value">24/7/365 via tickets</dd></div>
+        </dl>
+      </div>
+      <div class="card lg:col-span-5">
+        <span class="eyebrow">Talk to us</span>
+        <h2 class="mt-4 text-3xl">Contact</h2>
+        <ul class="mt-4">
+          <li class="check-item"><i class="fa fa-whatsapp"></i> <a href="https://wa.me/5511916788282" target="_blank">+55 11 91678-8282 (WhatsApp)</a></li>
+          <li class="check-item"><i class="fa fa-comments"></i> <a href="https://wa.me/5511916788282" data-bb-chat="Hi! I came from the About us page.">Chat with support</a></li>
+          <li class="check-item"><i class="fa fa-user"></i> <a href="{% url 'customers:dashboard' %}">Customer area</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+{% endblock %}

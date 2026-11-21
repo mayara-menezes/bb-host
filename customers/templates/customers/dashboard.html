@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}Customer dashboard | BB Host{% endblock %}
+
+{% block content %}
+  <section class="section-tight pb-16">
+    <div class="container-site">
+      {% include 'customers/_menu.html' %}
+
+      <div class="mt-8 mb-6">
+        <h1 class="heading">{{ profile.company_name|default:user.get_full_name|default:user.email }}</h1>
+        <div class="mt-3 flex flex-wrap items-center gap-2">
+          <span class="badge"><i class="fa fa-life-ring"></i> Support: {{ profile.get_support_plan_display }}</span>
+          {% if profile.verified %}
+            <span class="badge badge-success"><i class="fa fa-check"></i> Verified account</span>
+          {% else %}
+            <span class="badge"><i class="fa fa-id-card-o"></i> Unverified account</span>
+          {% endif %}
+          <a href="{% url 'customers:credit' %}" class="badge badge-primary no-underline"><i class="fa fa-credit-card"></i> Balance: R$ {{ profile.credit_balance|money }}</a>
+        </div>
+      </div>
+
+      {% if not profile.is_complete %}
+        <div class="alert alert-warning mb-6">
+          <i class="fa fa-exclamation-circle mr-1"></i>
+          Fill in your ID, phone and address under <a href="{% url 'customers:profile' %}">Account</a> to speed up service activation.
+        </div>
+      {% endif %}
+
+      {% with tile='card card-hover flex flex-col gap-1 p-5 text-sm text-muted no-underline' %}
+        <div class="mb-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          <a href="{% url 'customers:services' %}" class="{{ tile }}"><div class="icon-tile mb-2 size-9 text-base"><i class="fa fa-server"></i></div><b class="text-2xl text-ink-strong">{{ service_count }}</b>Services</a>
+          <a href="{% url 'customers:invoices' %}?filter=open" class="{{ tile }}"><div class="icon-tile mb-2 size-9 text-base"><i class="fa fa-file-text-o"></i></div><b class="text-2xl text-ink-strong">{{ open_invoice_count }}</b>Open invoices</a>
+          <a href="{% url 'customers:tickets' %}" class="{{ tile }}"><div class="icon-tile mb-2 size-9 text-base"><i class="fa fa-life-ring"></i></div><b class="text-2xl text-ink-strong">{{ open_ticket_count }}</b>Open tickets</a>
+          <a href="{% url 'customers:credit' %}" class="{{ tile }}"><div class="icon-tile mb-2 size-9 text-base"><i class="fa fa-plus-circle"></i></div>Add funds</a>
+          <a href="{% url 'customers:ticket_new' %}" class="{{ tile }}"><div class="icon-tile mb-2 size-9 text-base"><i class="fa fa-comments"></i></div>Open a ticket</a>
+          <a href="{% url 'orders:colocation_new' %}" class="{{ tile }}"><div class="icon-tile mb-2 size-9 text-base"><i class="fa fa-calculator"></i></div>Colocation quote</a>
+          <a href="{% url 'home:vps' %}" class="{{ tile }}"><div class="icon-tile mb-2 size-9 text-base"><i class="fa fa-cloud"></i></div>New VPS</a>
+          <a href="{% url 'home:dedicated' %}" class="{{ tile }}"><div class="icon-tile mb-2 size-9 text-base"><i class="fa fa-hdd-o"></i></div>New dedicated server</a>
+        </div>
+      {% endwith %}
+
+      {% if vps_orders or dedicated_orders %}
+        <h2 class="mb-3 text-xl">Recent orders</h2>
+        <div class="card mb-10 overflow-x-auto p-0">
+          <table class="data-table">
+            <thead><tr><th>Order</th><th>Description</th><th>Monthly</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody>
+              {% for o in vps_orders %}
+                <tr>
+                  <td><a href="{% url 'orders:vps_detail' o.pk %}">{{ o.code }}</a></td>
+                  <td>{{ o.description }}</td>
+                  <td>R$ {{ o.monthly_price|money }}</td>
+                  <td>{% include 'customers/_status.html' with status=o.status label=o.get_status_display %}</td>
+                  <td>{{ o.created_at|date:"M j, Y" }}</td>
+                </tr>
+              {% endfor %}
+              {% for o in dedicated_orders %}
+                <tr>
+                  <td><a href="{% url 'orders:dedicated_detail' o.pk %}">{{ o.code }}</a></td>
+                  <td>{{ o.description }}</td>
+                  <td>R$ {{ o.monthly_price|money }}</td>
+                  <td>{% include 'customers/_status.html' with status=o.status label=o.get_status_display %}</td>
+                  <td>{{ o.created_at|date:"M j, Y" }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+
+      {% if colocation_requests or mitigation_requests %}
+        <h2 class="mb-3 text-xl">Requests</h2>
+        <div class="card overflow-x-auto p-0">
+          <table class="data-table">
+            <thead><tr><th>Code</th><th>Type</th><th>Details</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody>
+              {% for r in colocation_requests %}
+                <tr>
+                  <td><a href="{% url 'orders:colocation_detail' r.pk %}">{{ r.code }}</a></td>
+                  <td>Colocation</td>
+                  <td>{{ r.items.all|length }} server{{ r.items.all|length|pluralize }} · {{ r.total_units }}U · R$ {{ r.estimated_price|money }}/month</td>
+                  <td>{% include 'customers/_status.html' with status=r.status label=r.get_status_display %}</td>
+                  <td>{{ r.created_at|date:"M j, Y" }}</td>
+                </tr>
+              {% endfor %}
+              {% for r in mitigation_requests %}
+                <tr>
+                  <td>{{ r.code }}</td>
+                  <td>Anti-DDoS</td>
+                  <td>{{ r.bandwidth }} · {{ r.delivery_mode }}</td>
+                  <td>{% include 'customers/_status.html' with status=r.status label=r.get_status_display %}</td>
+                  <td>{{ r.created_at|date:"M j, Y" }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}

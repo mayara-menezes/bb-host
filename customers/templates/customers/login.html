@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Log in | BB Host{% endblock %}
+
+{% block content %}
+  <section class="hero section min-h-[60vh]">
+    <div class="container-site">
+      <div class="card mx-auto max-w-md">
+        <span class="eyebrow"><i class="fa fa-user"></i> Customer area</span>
+        <h1 class="heading mt-4">Log in</h1>
+        <p class="hint mt-1 mb-6">Access your services, orders and support tickets.</p>
+
+        <form method="post" class="space-y-4" novalidate>
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ next }}">
+          {% if form.non_field_errors %}
+            <div class="alert alert-error">{% for e in form.non_field_errors %}{{ e }}{% endfor %}</div>
+          {% endif %}
+          {% include 'partials/field.html' with field=form.username %}
+          {% include 'partials/field.html' with field=form.password %}
+          <button type="submit" class="btn btn-primary w-full">Log in <i class="fa fa-arrow-right"></i></button>
+        </form>
+
+        <p class="hint mt-6 text-center">
+          Don't have an account?
+          <a href="{% url 'customers:signup' %}{% if next %}?next={{ next|urlencode }}{% endif %}">Sign up</a>
+        </p>
+      </div>
+    </div>
+  </section>
+{% endblock %}

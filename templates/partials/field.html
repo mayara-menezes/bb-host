@@ -1,0 +1,15 @@
+{# Renders one form field with the site styling. Usage: {% include 'partials/field.html' with field=form.email %} #}
+{% if field.field.widget.input_type == 'checkbox' %}
+  <div class="flex items-start gap-2">
+    {{ field }}
+    <label class="text-sm text-ink" for="{{ field.id_for_label }}">{{ field.label }}</label>
+  </div>
+  {% for e in field.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+{% else %}
+  <div>
+    <label class="field-label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span class="text-red-600">*</span>{% endif %}</label>
+    {{ field }}
+    {% if field.help_text %}<p class="hint mt-1">{{ field.help_text }}</p>{% endif %}
+    {% for e in field.errors %}<p class="field-error">{{ e }}</p>{% endfor %}
+  </div>
+{% endif %}

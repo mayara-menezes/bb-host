@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Anti-DDoS Mitigation for your business | BB Host{% endblock %}
+
+{% block content %}
+  <section class="hero section-tight">
+    <div class="container-site mx-auto max-w-3xl text-center">
+      <span class="eyebrow"><i class="fa fa-shield"></i> Mitigation as a Service</span>
+      <h1 class="display mt-6">DDoS protection for <span class="gradient-text">your entire operation</span></h1>
+      <p class="lead mt-6">
+        Bring BB Host's 500 Tbps of mitigation to your own infrastructure: on-premises,
+        at another provider or anywhere you operate. No null-routing, no blackholing.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-tight pb-16">
+    <div class="container-site grid items-start gap-6 lg:grid-cols-12">
+      <div class="card lg:col-span-7">
+        <span class="eyebrow">Build your protection</span>
+        <h2 class="mt-4 text-3xl">Protect your business</h2>
+        <p class="hint mt-1 mb-6">
+          We protect your whole operation, not just one IP. Tell us how much clean traffic you need
+          delivered and how you want to receive it; we will finalize the design together.
+        </p>
+        <div class="border-b border-line pb-5">
+          <div class="mb-2 flex items-baseline justify-between">
+            <label class="field-label" for="clean_range"><i class="fa fa-tachometer mr-2"></i>Clean traffic delivered</label>
+            <strong id="clean_val" class="text-ink-strong"></strong>
+          </div>
+          <input type="range" class="range" id="clean_range" min="0" max="{{ tiers|length|add:'-1' }}" step="1" value="{{ default_tier }}"
+                 data-tiers="{% for t in tiers %}{{ t.label }}{% if not forloop.last %}|{% endif %}{% endfor %}">
+          <div class="mt-1.5 flex justify-between text-xs text-muted">
+            <span>{{ tiers.0.label }}</span>
+            {% for t in tiers %}{% if forloop.counter0 == default_tier %}<span>{{ t.label }}</span>{% endif %}{% endfor %}
+            <span>{{ tiers|last }}</span>
+          </div>
+        </div>
+        <div class="pt-5">
+          <label class="field-label" for="mit_mode"><i class="fa fa-random mr-2"></i>Delivery mode</label>
+          <select id="mit_mode" class="form-select max-w-sm">
+            {% for m in modes %}<option value="{{ m.name }}">{{ m.name }}</option>{% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <aside class="card card-featured lg:sticky lg:top-24 lg:col-span-5">
+        <h2 class="text-2xl">Your protection</h2>
+        <p class="hint mb-3" id="mit_label"></p>
+        <p class="price">Custom quote</p>
+        <ul class="my-4">
+          <li class="check-item"><i class="fa fa-check"></i> Up to 500 Tbps of mitigation</li>
+          <li class="check-item"><i class="fa fa-check"></i> No null-routing / blackholing</li>
+          <li class="check-item"><i class="fa fa-check"></i> Always-on or on-demand</li>
+        </ul>
+        <a id="mit_cta" href="{% url 'orders:mitigation_quote' %}" data-base="{% url 'orders:mitigation_quote' %}" class="btn btn-primary w-full"><i class="fa fa-comments"></i> Request a quote</a>
+        <p class="hint mt-3 text-center">Prefer WhatsApp? <a id="mit_wa" href="https://wa.me/5511916788282" target="_blank">+55 11 91678-8282</a></p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="container-site">
+      {% include 'partials/section_heading.html' with eyebrow='How it works' title='Clean traffic all the way to your network' %}
+      <div class="grid gap-5 md:grid-cols-3">
+        {% include 'partials/feature_card.html' with icon='fa-filter' title='1. Diversion' text='Your traffic flows through our distributed scrubbing centers.' %}
+        {% include 'partials/feature_card.html' with icon='fa-shield' title='2. Mitigation' text='Smart detection filters the attack in real time, without taking the IP down.' %}
+        {% include 'partials/feature_card.html' with icon='fa-check-circle' title='3. Delivery' text='Legitimate traffic reaches your infrastructure clean.' %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-site grid items-center gap-12 lg:grid-cols-2">
+      <div>
+        <span class="eyebrow"><i class="fa fa-bolt"></i> Why BB Host</span>
+        <h2 class="heading mt-4">Real mitigation, without compromising availability</h2>
+        <ul class="mt-5">
+          <li class="check-item"><i class="fa fa-check"></i> 500 Tbps of distributed capacity (Cloudflare Magic Transit)</li>
+          <li class="check-item"><i class="fa fa-check"></i> No null-routing and no blackholing policy</li>
+          <li class="check-item"><i class="fa fa-check"></i> MANRS member (secure routing)</li>
+          <li class="check-item"><i class="fa fa-check"></i> 24/7/365 support and NOC</li>
+        </ul>
+      </div>
+      <div class="card grid grid-cols-2 gap-4">
+        {% include 'partials/stat.html' with value='500 Tbps' label='Capacity' gradient=True %}
+        {% include 'partials/stat.html' with value='0' label='Null-routes' %}
+        {% include 'partials/stat.html' with value='24/7' label='NOC' %}
+        {% include 'partials/stat.html' with value='L3-L7' label='Protected layers' %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

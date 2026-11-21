@@ -1,0 +1,5 @@
+{# Big number with a caption. Usage: {% include 'partials/stat.html' with value='500 Tbps' label='...' gradient=True %} #}
+<div class="rounded-xl border border-line bg-surface p-4 text-center">
+  <div class="font-display text-[2.1rem] leading-tight font-extrabold tracking-tight {% if gradient %}gradient-text{% else %}text-ink-strong{% endif %}">{{ value }}</div>
+  <div class="mt-1 text-sm text-muted">{{ label }}</div>
+</div>

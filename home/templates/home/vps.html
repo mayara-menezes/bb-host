@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Cloud VPS with Anti-DDoS | BB Host{% endblock %}
+
+{% block content %}
+  <section class="hero section-tight">
+    <div class="container-site mx-auto max-w-3xl text-center">
+      <span class="eyebrow"><i class="fa fa-server"></i> Cloud VPS</span>
+      <h1 class="display mt-6">Build your VPS <span class="gradient-text">your way</span></h1>
+      <p class="lead mt-6">
+        Adjust CPU, memory and disk and see the price in real time.
+        Automatic delivery, IP on a VLAN and Anti-DDoS included.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-tight pb-16">
+    <div class="container-site grid items-start gap-6 lg:grid-cols-12" id="vps_build"
+         data-pram="{{ settings.price_per_gb_ram|stringformat:'.2f' }}"
+         data-pcpu="{{ settings.price_per_vcpu|stringformat:'.2f' }}"
+         data-pdisk="{{ settings.price_per_gb_disk|stringformat:'.2f' }}">
+      <form action="{% url 'orders:vps_checkout' %}" method="post" class="card divide-y divide-line lg:col-span-7" id="vps_form">
+        {% csrf_token %}
+        <div class="pb-5">
+          <div class="mb-2 flex items-baseline justify-between">
+            <label class="field-label" for="cpu"><i class="fa fa-microchip mr-2"></i>vCPU</label>
+            <span class="text-chip-ink"><strong id="cpu_val" class="text-lg text-ink-strong"></strong> vCPU</span>
+          </div>
+          <input type="range" class="range" name="cpu" id="cpu" min="{{ settings.vcpu_min }}" max="{{ settings.vcpu_max }}" step="1" value="{{ settings.vcpu_min }}">
+        </div>
+        <div class="py-5">
+          <div class="mb-2 flex items-baseline justify-between">
+            <label class="field-label" for="ram"><i class="fa fa-server mr-2"></i>Memory (RAM)</label>
+            <span class="text-chip-ink"><strong id="ram_val" class="text-lg text-ink-strong"></strong> GB</span>
+          </div>
+          <input type="range" class="range" name="ram" id="ram" min="{{ settings.ram_min }}" max="{{ settings.ram_max }}" step="1" value="{{ settings.ram_min }}">
+        </div>
+        <div class="py-5">
+          <div class="mb-2 flex items-baseline justify-between">
+            <label class="field-label" for="disk"><i class="fa fa-hdd-o mr-2"></i>NVMe disk</label>
+            <span class="text-chip-ink"><strong id="disk_val" class="text-lg text-ink-strong"></strong> GB</span>
+          </div>
+          <input type="range" class="range" name="disk" id="disk" min="{{ settings.disk_min }}" max="{{ settings.disk_max }}" step="{{ settings.disk_step }}" value="{{ settings.disk_min }}">
+        </div>
+        <div class="py-5">
+          <label class="field-label" for="vps_os"><i class="fa fa-desktop mr-2"></i>Operating system</label>
+          <select name="os" id="vps_os" class="form-select max-w-sm">
+            {% for os in operating_systems %}<option value="{{ os.pk }}" data-price="{{ os.monthly_price|stringformat:'.2f' }}">{{ os.name }}{% if os.monthly_price %} (+ R$ {{ os.monthly_price|money }}/month){% endif %}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="pt-5">
+          <p class="field-label"><i class="fa fa-globe mr-2"></i>IP address</p>
+          <p class="hint">
+            Your VPS automatically gets an <b>IPv4 /32 (on a VLAN)</b>. Already have an IP block with us?
+            <a href="{% url 'customers:login' %}?next={% url 'home:vps' %}">Log in</a> to choose an IP.
+          </p>
+        </div>
+      </form>
+
+      <aside class="card card-featured lg:sticky lg:top-24 lg:col-span-5">
+        <h2 class="text-2xl">VPS</h2>
+        <p class="hint mb-3">Recurring monthly billing</p>
+        <p><span class="price">R$ <span id="vps_price"></span></span> <span class="price-unit">/month</span></p>
+        <ul class="my-4">
+          <li class="check-item"><i class="fa fa-check"></i> Automatic delivery</li>
+          <li class="check-item"><i class="fa fa-check"></i> Anti-DDoS included</li>
+          <li class="check-item"><i class="fa fa-check"></i> 24/7/365 support</li>
+        </ul>
+        <button type="submit" form="vps_form" class="btn btn-primary w-full">Order now <i class="fa fa-arrow-right"></i></button>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="container-site">
+      {% include 'partials/section_heading.html' with eyebrow='How it works' title='From configuration to a running VPS in minutes' %}
+      <div class="grid gap-5 md:grid-cols-3">
+        {% include 'partials/feature_card.html' with icon='fa-sliders' title='1. Configure' text='Adjust the resources and pick the operating system.' %}
+        {% include 'partials/feature_card.html' with icon='fa-credit-card' title='2. Pay' text='Straight checkout with PIX or a recurring card payment.' %}
+        {% include 'partials/feature_card.html' with icon='fa-rocket' title='3. Connect' text='Automatic provisioning with an IP on a VLAN.' %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

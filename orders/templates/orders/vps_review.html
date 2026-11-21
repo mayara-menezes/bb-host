@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Review your VPS | BB Host{% endblock %}
+
+{% block content %}
+  <section class="section-tight pb-16">
+    <div class="container-site">
+      <a href="{% url 'home:vps' %}" class="text-sm text-muted no-underline hover:text-ink-strong"><i class="fa fa-arrow-left"></i> Change configuration</a>
+      <div class="mt-4 mb-8">
+        <span class="eyebrow"><i class="fa fa-server"></i> Cloud VPS</span>
+        <h1 class="heading mt-4">Review your order</h1>
+      </div>
+
+      <form method="post" class="grid items-start gap-6 lg:grid-cols-12" novalidate>
+        {% csrf_token %}
+        <div class="space-y-6 lg:col-span-7">
+          <div class="card">
+            <span class="eyebrow">Selected configuration</span>
+            <dl class="mt-4">
+              <div class="spec-row"><dt class="spec-key"><i class="fa fa-microchip fa-fw"></i> vCPU</dt><dd class="spec-value">{{ order.vcpu }}</dd></div>
+              <div class="spec-row"><dt class="spec-key"><i class="fa fa-server fa-fw"></i> Memory</dt><dd class="spec-value">{{ order.ram_gb }} GB</dd></div>
+              <div class="spec-row"><dt class="spec-key"><i class="fa fa-hdd-o fa-fw"></i> NVMe disk</dt><dd class="spec-value">{{ order.disk_gb }} GB</dd></div>
+              <div class="spec-row"><dt class="spec-key"><i class="fa fa-desktop fa-fw"></i> Operating system</dt><dd class="spec-value">{{ order.operating_system }}</dd></div>
+              <div class="spec-row"><dt class="spec-key"><i class="fa fa-globe fa-fw"></i> IP</dt><dd class="spec-value">IPv4 /32 (on a VLAN)</dd></div>
+            </dl>
+          </div>
+          <div class="card space-y-4">
+            {% include 'partials/field.html' with field=form.hostname %}
+            {% include 'partials/field.html' with field=form.ssh_key %}
+            {% include 'partials/field.html' with field=form.notes %}
+          </div>
+        </div>
+
+        <aside class="card card-featured lg:sticky lg:top-24 lg:col-span-5">
+          <h2 class="text-2xl">Summary</h2>
+          <p class="hint mb-3">Recurring monthly billing</p>
+          <dl>
+            <div class="spec-row"><dt class="spec-key">Monthly price</dt><dd class="spec-value">R$ {{ order.monthly_price|money }}</dd></div>
+            {% if order.coupon %}
+              <div class="spec-row"><dt class="spec-key">Coupon {{ order.coupon.code }}</dt><dd class="spec-value text-green-600">− R$ {{ order.monthly_discount|money }} × {{ order.discount_months }} month{{ order.discount_months|pluralize }}</dd></div>
+            {% endif %}
+          </dl>
+          <p class="my-3"><span class="price">R$ {{ order.discounted_price|money }}</span> <span class="price-unit">{% if order.coupon %}/first month{% else %}/month{% endif %}</span></p>
+
+          <div class="flex items-end gap-2">
+            <div class="flex-1">{% include 'partials/field.html' with field=form.coupon %}</div>
+            <button type="submit" name="action" value="apply" class="btn btn-outline">Apply</button>
+          </div>
+
+          <p class="hint mt-4">Account: <b>{{ user.email }}</b>.
+            {% if not profile.is_complete %}<br>You can complete your details later under <a href="{% url 'customers:profile' %}">Account</a>.{% endif %}</p>
+          <button type="submit" name="action" value="confirm" class="btn btn-primary mt-4 w-full">Place order <i class="fa fa-arrow-right"></i></button>
+          <p class="hint mt-2 text-center">We issue the invoice; delivery is automatic after payment.</p>
+        </aside>
+      </form>
+    </div>
+  </section>
+{% endblock %}
